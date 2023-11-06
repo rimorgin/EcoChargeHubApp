@@ -1,9 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
+import * as SystemUI from 'expo-system-ui';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginRegis from './auth/LoginRegis';
 import GetStartedOTP from './auth/getStartedOTP';
+
+SystemUI.setBackgroundColorAsync('white');
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -12,7 +15,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={LoginRegis} options={ {headerShown: false} } />
-          <Stack.Screen name="OTP Login" component={GetStartedOTP}/>
+          <Stack.Screen name="OTP Login/Register" component={GetStartedOTP}/>
         </Stack.Navigator>  
       </NavigationContainer>
     </View>

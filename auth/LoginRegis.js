@@ -96,7 +96,7 @@ function LoginAndRegis({navigation}) {
         <Text style={styles.appName} >EcoChargeHub</Text>
         <Text style={styles.description}>Find charging stations with realtime availability. Book and reserve charging stations at ease.</Text>
         <Shadow>
-            <TouchableOpacity style={styles.getStarted} onPress={() => navigation.navigate('OTP Login')}>
+            <TouchableOpacity style={styles.getStarted} onPress={() => navigation.navigate('OTP Login/Register')}>
                 <Text style={styles.buttonText}>Get Started</Text>
             </TouchableOpacity>
         </Shadow>
