@@ -3,9 +3,12 @@ import * as SystemUI from 'expo-system-ui';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { auth } from './firebaseConfig';
 import LoginRegis from './auth/LoginRegis';
 import GetStartedOTP from './auth/getStartedOTP';
+import Homescreen from './pages/home';
 import Toast from 'react-native-toast-message';
+
 
 SystemUI.setBackgroundColorAsync('white');
 
@@ -17,19 +20,27 @@ const NavTheme = {
   },
 };
 
+const isLogin = auth.currentUser;
+
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer theme={NavTheme}>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login" component={LoginRegis} options={ {headerShown: false} } />
+        {isLogin == null ? (
+        <Stack.Group>
+          <Stack.Screen name="Login" component={LoginRegis} options={ {headerShown: false, headerShadowVisible: true} } />
           <Stack.Screen name="OTP Login/Register" component={GetStartedOTP} />
-        </Stack.Navigator>  
+        </Stack.Group> ) : (
+        <Stack.Group screenOptions={{ headerShown: false}}>
+          <Stack.Screen name="Homescreen" component={Homescreen} options={ {headerShown: false} }/>
+        </Stack.Group>
+        )}
       </NavigationContainer>
       <Toast 
         position='top'
       />
+      <StatusBar style="dark" />
     </View>
   );
 }
