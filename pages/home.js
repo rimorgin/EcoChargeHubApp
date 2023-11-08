@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import Profile from './profile';
+import Settings from './settings';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -45,6 +47,10 @@ export default function Homescreen() {
       style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
       onLayout={onLayoutRootView}>
       <Text>SplashScreen Demo! 👋</Text>
+      <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name="Settings" component={Settings} />
+    </Tab.Navigator>
     </View>
   );
 }
