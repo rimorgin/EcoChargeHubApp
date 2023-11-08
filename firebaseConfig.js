@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, initializeAuth, getReactNativePersistence, browserSessionPersistence } from 'firebase/auth'
+import { getAuth, initializeAuth, getReactNativePersistence, browserPopupRedirectResolver } from 'firebase/auth'
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
@@ -13,5 +13,8 @@ const firebaseConfig = {
   };
 
 export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app)
+export const auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+    popupRedirectResolver: browserPopupRedirectResolver,
+  });
 
