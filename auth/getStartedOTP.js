@@ -8,7 +8,8 @@ import { PhoneAuthProvider, signInWithCredential } from "firebase/auth"
 import { Pressable, StyleSheet, Text, useWindowDimensions, Image, View, TextInput, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
 import Toast from 'react-native-toast-message';
-import LoaderKit from 'react-native-loader-kit'
+import AnimatedLoader from 'react-native-animated-loader'
+
 
 function GetStartedOTP() {
     const {width, height} = useWindowDimensions();
@@ -19,6 +20,8 @@ function GetStartedOTP() {
     const [verificationCode, setVerificationCode] = useState()
     const firebaseConfig = app ? app.options : undefined;
     const attemptInvisibleVerification = true
+    const [visible, setVisible] = useState(false);
+
 
     const formatPhoneNumber = (input) => {
         const cleaned = input.replace(/\D/g, '');
@@ -39,16 +42,19 @@ function GetStartedOTP() {
     },[phoneNumber])
     
     const verifyPhone = async() => {
+        setVisible(true);
         try {
             const phoneProvider = new PhoneAuthProvider(auth)
             const verificationId = await phoneProvider.verifyPhoneNumber('+63 '+phoneNumber,recaptchaVerifier.current)
             setVerificationId(verificationId)
+            setVisible(false);
             Toast.show({
                 type: 'success',
                 text1: 'Success',
                 text2: 'Verification code has been sent to your phone ✅'
               });
         } catch (err) {
+            setVisible(false);
             Toast.show({
                 type: 'error',
                 text1: 'Oops!',
@@ -57,6 +63,7 @@ function GetStartedOTP() {
         }
     }
     const verifyCode = async() => {
+        setVisible(true);
         try {
             const credential = PhoneAuthProvider.credential(
                 verificationId,
@@ -64,6 +71,7 @@ function GetStartedOTP() {
             )
 
             await signInWithCredential(auth, credential)
+            setVisible(false);
             Toast.show({
                 type: 'success',
                 text1: 'Success',
@@ -74,6 +82,7 @@ function GetStartedOTP() {
             setVerificationCode('')
 
         } catch (err) {
+            setVisible(false);
             Toast.show({
                 type: 'error',
                 text1: 'Oops!',
@@ -124,7 +133,8 @@ function GetStartedOTP() {
         },
         input: {
             marginLeft: 35, 
-            width: 250,
+            minWidth: 150,
+            maxWidth: 250,
             height: 40,
             margin: 12,
             borderBottomWidth: 1,
@@ -152,16 +162,24 @@ function GetStartedOTP() {
         },
         firebaseCaptchaBanner: {
             bottom:5,
-        }
+        },
+        loaderContainer: {
+            height:height,
+            width:width,
+            backgroundColor: 'rgba(255, 255, 255, 0.75)',
+            overlayColor:'rgba(255,255,255,0.75)',
+            position: 'absolute',
+            alignItems:'center',
+            justifyContent:'center',
+            top:-100
+        },
+        lottie: {
+            width: 200,
+            height: 200,
+          },
     })
   return (
     <>
-    <LoaderKit
-        style={{ width: 50, height: 50 }}
-        name={'BallScaleRippleMultiple'} // Optional: see list of animations below
-        size={50} // Required on iOS
-        color={'green'} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
-    />
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container} >
         <FirebaseRecaptchaVerifierModal
@@ -243,6 +261,11 @@ function GetStartedOTP() {
         <FirebaseRecaptchaBanner style={styles.firebaseCaptchaBanner}/>
     </View>
     </TouchableWithoutFeedback>
+    {visible && 
+        <View style={styles.loaderContainer} >
+            <Image source={require('../assets/electricAnims.gif')} style={styles.lottie}/> 
+        </View>
+    }
     </>
   )
 }

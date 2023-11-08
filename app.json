@@ -8,8 +8,14 @@
     "userInterfaceStyle": "light",
     "plugins": [
       "@react-native-firebase/app",
-      "@react-native-firebase/auth",
-      "expo-build-properties"
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
     ],
     "splash": {
       "image": "./assets/splash.png",
@@ -21,7 +27,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.rimorgin.EcoChargeHubApp"
+      "bundleIdentifier": "com.rimorgin.EcoChargeHubApp",
     },
     "android": {
       "adaptiveIcon": {

@@ -2,7 +2,6 @@ import React from 'react'
 import { Image, StyleSheet, Text, View, useWindowDimensions, TouchableOpacity } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
 import Toast from 'react-native-toast-message';
-import { showErrorToast } from '../components/toast';
 
 function LoginAndRegis({navigation}) {
     const {width, height} = useWindowDimensions();
