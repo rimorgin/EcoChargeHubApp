@@ -28,8 +28,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.rimorgin.EcoChargeHubApp",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
+      "googleServicesFile": "./GoogleService-Info.plist",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

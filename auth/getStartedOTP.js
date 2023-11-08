@@ -4,7 +4,7 @@ import {
     FirebaseRecaptchaVerifierModal,
     FirebaseRecaptchaBanner,
 } from "expo-firebase-recaptcha"
-import { PhoneAuthProvider, signInWithCredential } from "firebase/auth"
+import { PhoneAuthProvider, signInWithCredential, updateProfile } from "firebase/auth"
 import { Pressable, StyleSheet, Text, useWindowDimensions, Image, View, TextInput, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
 import Toast from 'react-native-toast-message';
@@ -79,6 +79,10 @@ function GetStartedOTP({navigation}) {
             )
 
             await signInWithCredential(auth, credential)
+            
+            const user = auth.currentUser
+            const userName = user.displayName
+            await updateProfile(user)
             setVisible(false);
             Toast.show({
                 type: 'success',

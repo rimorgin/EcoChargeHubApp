@@ -4,7 +4,7 @@ const config = getDefaultConfig(__dirname);
 
 config.transformer.minifierPath = require.resolve("metro-minify-esbuild");
 config.transformer.minifierConfig = {
-  // ESBuild options...
+  drop: ["console"],
 };
 
 module.exports = config;
