@@ -20,6 +20,7 @@ const NavTheme = {
   },
 };
 
+console.log('current user: '+ JSON.stringify(auth.currentUser));
 const isLogin = auth.currentUser;
 
 const Stack = createNativeStackNavigator();
@@ -27,15 +28,22 @@ export default function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer theme={NavTheme}>
+        
         {isLogin == null ? (
-        <Stack.Group>
-          <Stack.Screen name="Login" component={LoginRegis} options={ {headerShown: false, headerShadowVisible: true} } />
-          <Stack.Screen name="OTP Login/Register" component={GetStartedOTP} />
-        </Stack.Group> ) : (
-        <Stack.Group screenOptions={{ headerShown: false}}>
-          <Stack.Screen name="Homescreen" component={Homescreen} options={ {headerShown: false} }/>
-        </Stack.Group>
+        <Stack.Navigator initialRouteName='Login'>
+          <Stack.Group>
+            <Stack.Screen name="Login" component={LoginRegis} options={ {headerShown: false, headerShadowVisible: true} } />
+            <Stack.Screen name="OTP Login/Register" component={GetStartedOTP} options={ { headerShadowVisible: true} }/>
+          </Stack.Group> 
+        </Stack.Navigator>
+        ) : (
+        <Stack.Navigator initialRouteName='Homescreen'>  
+          <Stack.Group screenOptions={{ headerShown: false}}>
+            <Stack.Screen name="Homescreen" component={Homescreen}/>
+          </Stack.Group>
+        </Stack.Navigator>
         )}
+       
       </NavigationContainer>
       <Toast 
         position='top'
