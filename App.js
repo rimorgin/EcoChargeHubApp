@@ -5,6 +5,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginRegis from './auth/LoginRegis';
 import GetStartedOTP from './auth/getStartedOTP';
+import Toast from 'react-native-toast-message';
 
 SystemUI.setBackgroundColorAsync('white');
 
@@ -23,9 +24,13 @@ export default function App() {
       <NavigationContainer theme={NavTheme}>
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={LoginRegis} options={ {headerShown: false} } />
-          <Stack.Screen name="OTP Login/Register" component={GetStartedOTP}/>
+          <Stack.Screen name="OTP Login/Register" component={GetStartedOTP} />
         </Stack.Navigator>  
       </NavigationContainer>
+      <Toast 
+        position='bottom'
+        bottomOffset={20}
+      />
     </View>
   );
 }
