@@ -2,17 +2,29 @@ import React from 'react'
 import { Image, StyleSheet, Text, View, useWindowDimensions, TouchableOpacity } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
 import Toast from 'react-native-toast-message';
+import { showErrorToast } from '../components/toast';
 
 function LoginAndRegis({navigation}) {
     const {width, height} = useWindowDimensions();
     const paddingTopLogo = height / 2 - 500;
     const widthButtons = width - 100
 
-    const showToast = () => {
+    const title = 'Sign In';
+    const message = 'This sign in method is not yet applicable'
+
+    const showSuccessToast = (title, message) => {
         Toast.show({
           type: 'success',
-          text1: 'Hello',
-          text2: 'This is some something 👋'
+          text1: title,
+          text2: message
+        });
+    }
+    
+    const showErrorToast = () => {
+        Toast.show({
+          type: 'error',
+          text1: 'Sign In',
+          text2: 'This sign in method is not yet applicable',
         });
     }
     /*
@@ -119,7 +131,7 @@ function LoginAndRegis({navigation}) {
             </TouchableOpacity>
         </Shadow>
         <Shadow>
-            <TouchableOpacity style={styles.signInWithFacebook} onPress={showToast}>
+            <TouchableOpacity style={styles.signInWithFacebook} onPress={showErrorToast}>
                 <Image
                 source={require('../images/fb.png')}
                 style={{width:20, height: 20, marginRight:5, resizeMode: 'contain'}}

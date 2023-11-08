@@ -7,20 +7,18 @@ import {
 import { PhoneAuthProvider, signInWithCredential } from "firebase/auth"
 import { Pressable, StyleSheet, Text, useWindowDimensions, Image, View, TextInput, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
+import Toast from 'react-native-toast-message';
+import LoaderKit from 'react-native-loader-kit'
 
 function GetStartedOTP() {
     const {width, height} = useWindowDimensions();
     //firebase variables
     const recaptchaVerifier = useRef(null)
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [message, showMessage] = useState()
     const [verificationId, setVerificationId] = useState()
     const [verificationCode, setVerificationCode] = useState()
     const firebaseConfig = app ? app.options : undefined;
     const attemptInvisibleVerification = true
-
-    console.log('message: '+message)
-    console.log(verificationId)
 
     const formatPhoneNumber = (input) => {
         const cleaned = input.replace(/\D/g, '');
@@ -45,12 +43,17 @@ function GetStartedOTP() {
             const phoneProvider = new PhoneAuthProvider(auth)
             const verificationId = await phoneProvider.verifyPhoneNumber('+63 '+phoneNumber,recaptchaVerifier.current)
             setVerificationId(verificationId)
-            showMessage({text:"Verification code has been sent to your phone."})
+            Toast.show({
+                type: 'success',
+                text1: 'Success',
+                text2: 'Verification code has been sent to your phone ✅'
+              });
         } catch (err) {
-            showMessage({
-                text: `Error 111: ${err.message}`,
-                color: "red",
-            })
+            Toast.show({
+                type: 'error',
+                text1: 'Oops!',
+                text2: err.message + ' ❌'
+              });
         }
     }
     const verifyCode = async() => {
@@ -61,16 +64,21 @@ function GetStartedOTP() {
             )
 
             await signInWithCredential(auth, credential)
-            showMessage({
-                text: "Phone authentication successful 👍",
-            })
+            Toast.show({
+                type: 'success',
+                text1: 'Success',
+                text2: 'Phone authentication successful 👍✅'
+              });
             setPhoneNumber('')
             setVerificationId('')
+            setVerificationCode('')
+
         } catch (err) {
-            showMessage({
-                text: `Error: ${err.message}`,
-                color: "red",
-            })
+            Toast.show({
+                type: 'error',
+                text1: 'Oops!',
+                text2: "Couldn't sign in, bad verification code ❌"
+              });
         }
     }
     
@@ -148,6 +156,12 @@ function GetStartedOTP() {
     })
   return (
     <>
+    <LoaderKit
+        style={{ width: 50, height: 50 }}
+        name={'BallScaleRippleMultiple'} // Optional: see list of animations below
+        size={50} // Required on iOS
+        color={'green'} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+    />
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container} >
         <FirebaseRecaptchaVerifierModal
@@ -226,28 +240,7 @@ function GetStartedOTP() {
         
         </>    
         )}
-       {message ? (
-                <TouchableOpacity
-                    style={[
-                        StyleSheet.absoluteFill,
-                        {
-                            backgroundColor: 0xffffffee,
-                            justifyContent: "center",
-                        },
-                    ]}
-                    onPress={() => showMessage(undefined)}>
-                    <Text
-                        style={{
-                            color: message.color || "blue",
-                            fontSize: 17,
-                            textAlign: "center",
-                            margin: 20,
-                        }}>
-                        {message.text}
-                    </Text>
-                </TouchableOpacity>
-            ) : undefined}
-            {attemptInvisibleVerification && <FirebaseRecaptchaBanner style={styles.firebaseCaptchaBanner}/>}
+        <FirebaseRecaptchaBanner style={styles.firebaseCaptchaBanner}/>
     </View>
     </TouchableWithoutFeedback>
     </>
