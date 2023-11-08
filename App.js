@@ -28,8 +28,7 @@ export default function App() {
         </Stack.Navigator>  
       </NavigationContainer>
       <Toast 
-        position='bottom'
-        bottomOffset={20}
+        position='top'
       />
     </View>
   );
