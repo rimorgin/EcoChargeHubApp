@@ -1,12 +1,20 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View, useWindowDimensions, TouchableOpacity } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
+import Toast from 'react-native-toast-message';
 
 function LoginAndRegis({navigation}) {
     const {width, height} = useWindowDimensions();
     const paddingTopLogo = height / 2 - 500;
     const widthButtons = width - 100
 
+    const showToast = () => {
+        Toast.show({
+          type: 'success',
+          text1: 'Hello',
+          text2: 'This is some something 👋'
+        });
+    }
     /*
     async function handleFacebookLogin() {
     const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
@@ -111,7 +119,7 @@ function LoginAndRegis({navigation}) {
             </TouchableOpacity>
         </Shadow>
         <Shadow>
-            <TouchableOpacity style={styles.signInWithFacebook} onPress={() => console.log('pressed')}>
+            <TouchableOpacity style={styles.signInWithFacebook} onPress={showToast}>
                 <Image
                 source={require('../images/fb.png')}
                 style={{width:20, height: 20, marginRight:5, resizeMode: 'contain'}}
