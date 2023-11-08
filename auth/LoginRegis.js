@@ -1,5 +1,5 @@
-import React from 'react'
-import { Image, StyleSheet, Text, View, useWindowDimensions, TouchableOpacity } from 'react-native'
+import React, {useState} from 'react'
+import { Image, StyleSheet, Text, View, useWindowDimensions, TouchableOpacity, Platform } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
 import Toast from 'react-native-toast-message';
 
@@ -7,9 +7,11 @@ function LoginAndRegis({navigation}) {
     const {width, height} = useWindowDimensions();
     const paddingTopLogo = height / 2 - 500;
     const widthButtons = width - 100
+    const [appleLogin, setAppleLogin] = useState(true)
 
-    const title = 'Sign In';
-    const message = 'This sign in method is not yet applicable'
+    if (Platform.OS == 'android'){
+        setAppleLogin('false')
+    }
 
     const showSuccessToast = (title, message) => {
         Toast.show({
@@ -120,6 +122,7 @@ function LoginAndRegis({navigation}) {
             </TouchableOpacity>
         </Shadow>
         <Text style={{fontWeight: '200', marginBottom: 10}}>or continue with</Text>
+        {appleLogin && 
         <Shadow>
             <TouchableOpacity style={styles.signInWithApple} onPress={() => console.log('pressed')}>
                 <Image
@@ -129,6 +132,7 @@ function LoginAndRegis({navigation}) {
                 <Text style={styles.buttonText}>Sign in with Apple</Text>
             </TouchableOpacity>
         </Shadow>
+        }
         <Shadow>
             <TouchableOpacity style={styles.signInWithFacebook} onPress={showErrorToast}>
                 <Image

@@ -8,10 +8,9 @@ import { PhoneAuthProvider, signInWithCredential } from "firebase/auth"
 import { Pressable, StyleSheet, Text, useWindowDimensions, Image, View, TextInput, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
 import Toast from 'react-native-toast-message';
-import AnimatedLoader from 'react-native-animated-loader'
 
 
-function GetStartedOTP() {
+function GetStartedOTP({navigation}) {
     const {width, height} = useWindowDimensions();
     //firebase variables
     const recaptchaVerifier = useRef(null)
@@ -37,9 +36,6 @@ function GetStartedOTP() {
             setPhoneNumber('');
         }
     };
-    useEffect(() => {
-        console.log(phoneNumber)
-    },[phoneNumber])
     
     const verifyPhone = async() => {
         setVisible(true);
@@ -62,6 +58,18 @@ function GetStartedOTP() {
               });
         }
     }
+
+    const isPhoneNumberValid = () => {
+        if (phoneNumber.length == 12) {
+            verifyPhone()
+        } else {
+            Toast.show({
+                type: 'error',
+                text1: 'Oops!',
+                text2: "You have entered invalid phone number ❌"
+              });
+        }
+    }
     const verifyCode = async() => {
         setVisible(true);
         try {
@@ -77,9 +85,8 @@ function GetStartedOTP() {
                 text1: 'Success',
                 text2: 'Phone authentication successful 👍✅'
               });
-            setPhoneNumber('')
-            setVerificationId('')
-            setVerificationCode('')
+            
+            navigation.navigate('Homescreen');
 
         } catch (err) {
             setVisible(false);
@@ -89,6 +96,10 @@ function GetStartedOTP() {
                 text2: "Couldn't sign in, bad verification code ❌"
               });
         }
+    }
+
+    const continueToHome = () => {
+        
     }
     
     const styles = StyleSheet.create({
@@ -215,7 +226,7 @@ function GetStartedOTP() {
             <View style={styles.buttoncontainer}>  
                 <Text style={styles.desctiption} >We're sending you a verification PIN to your mobile number. We use your mobile number to allow the stations to contact you about your booking.</Text>
                 <Shadow style={{borderRadius: 30}}>
-                    <Pressable id='sign-in-button' style={styles.actionButton} onPress={verifyPhone} disabled={!phoneNumber}>
+                    <Pressable id='sign-in-button' style={styles.actionButton} onPress={isPhoneNumberValid} disabled={!phoneNumber}>
                         <Image 
                             source={require('../images/arrowButton.png')}
                             style={styles.actionButton}
@@ -262,9 +273,9 @@ function GetStartedOTP() {
     </View>
     </TouchableWithoutFeedback>
     {visible && 
-        <View style={styles.loaderContainer} >
-            <Image source={require('../assets/electricAnims.gif')} style={styles.lottie}/> 
-        </View>
+    <View style={styles.loaderContainer} >
+        <Image source={require('../assets/electricAnims.gif')} style={styles.lottie}/> 
+    </View>
     }
     </>
   )
